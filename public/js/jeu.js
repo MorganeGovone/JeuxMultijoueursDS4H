@@ -130,7 +130,6 @@ function moveCurrentPlayer() {
     allPlayers[username].y += calcDistanceToMove(delta, allPlayers[username].vy);
 
     socket.emit("sendpos", { user: username, pos: allPlayers[username]});
-
   }
 }
 

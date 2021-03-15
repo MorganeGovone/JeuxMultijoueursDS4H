@@ -85,6 +85,11 @@ function init() {
     send("pongo");
   });
 
+  //heartbeat
+  socket.on("heartbeat",()=>{
+    socket.emit("heart");
+  });
+
   socket.on("data", (timestamp, rtt, serverTime) => {
     //console.log("rtt time received from server " + rtt);
 
