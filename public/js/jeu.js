@@ -85,7 +85,7 @@ function traiteMouseMove(evt) {
 
   console.log("On envoie sendPos");
   let pos = { user: username, pos: mousePos };
-  socket.emit("sendpos", pos);
+  //socket.emit("sendpos", pos);
 }
 
 function updatePlayerNewPos(newPos) {
@@ -97,6 +97,10 @@ function updatePlayerNewPos(newPos) {
 // ou se deconnecte
 function updatePlayers(listOfPlayers) {
   allPlayers = listOfPlayers;
+}
+
+function updatePlayerNewNb(nbUpdates){
+  allPlayers[nbUpdates.user].updatesPerSeconds = nbUpdates;
 }
 
 function drawPlayer(player) {
@@ -129,7 +133,7 @@ function moveCurrentPlayer() {
     allPlayers[username].x += calcDistanceToMove(delta, allPlayers[username].vx);
     allPlayers[username].y += calcDistanceToMove(delta, allPlayers[username].vy);
 
-    socket.emit("sendpos", { user: username, pos: allPlayers[username]});
+    //socket.emit("sendpos", { user: username, pos: allPlayers[username]});
   }
 }
 

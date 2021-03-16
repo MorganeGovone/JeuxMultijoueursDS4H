@@ -65,6 +65,11 @@ function init() {
     updatePlayerNewPos(newPos);
   });
 
+  /*socket.on("updatenb", (nbUpdatesPerSeconds)=>{
+    changeNbUpdates(nbUpdatesPerSeconds); //ou fonction de jeu
+    send("updateNb",nbUpdatesPerSeconds);
+  })*/
+
   // listener, whenever the server emits 'updateusers', this updates the username list
   socket.on("updateusers", (listOfUsers) => {
     users.innerHTML = "";
@@ -76,8 +81,8 @@ function init() {
 
   // update the whole list of players, useful when a player
   // connects or disconnects, we must update the whole list
-  socket.on("updatePlayers", (listOfplayers,nbUpdatesPerSeconds) => {
-    updatePlayers(listOfplayers,nbUpdatesPerSeconds);
+  socket.on("updatePlayers", (listOfplayers) => {
+    updatePlayers(listOfplayers);
   });
 
   // Latency, ping etc.
@@ -87,7 +92,7 @@ function init() {
 
   //heartbeat
   socket.on("heartbeat",()=>{
-    socket.emit("heart");
+    send("heart");
   });
 
   socket.on("data", (timestamp, rtt, serverTime) => {
@@ -127,9 +132,11 @@ function changeArtificialLatency(value) {
   spanDelayValue.innerHTML = artificialLatencyDelay;
 }
 
-function changeNbUpdates(value){
+function changeNbUpdatesI(value){
   nbUpdatesPerSeconds = parseInt(value);
 
   let spanUpdatesValue = document.querySelector("#updates");
   spanUpdatesValue.innerHTML = nbUpdatesPerSeconds;
+
+  socket.emit("updates",nbUpdatesPerSeconds);
 }
