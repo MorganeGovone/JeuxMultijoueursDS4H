@@ -76,8 +76,8 @@ function init() {
 
   // update the whole list of players, useful when a player
   // connects or disconnects, we must update the whole list
-  socket.on("updatePlayers", (listOfplayers) => {
-    updatePlayers(listOfplayers);
+  socket.on("updatePlayers", (listOfplayers,nbUpdatesPerSeconds) => {
+    updatePlayers(listOfplayers,nbUpdatesPerSeconds);
   });
 
   // Latency, ping etc.
@@ -125,4 +125,11 @@ function changeArtificialLatency(value) {
 
   let spanDelayValue = document.querySelector("#delay");
   spanDelayValue.innerHTML = artificialLatencyDelay;
+}
+
+function changeNbUpdates(value){
+  nbUpdatesPerSeconds = parseInt(value);
+
+  let spanUpdatesValue = document.querySelector("#updates");
+  spanUpdatesValue.innerHTML = nbUpdatesPerSeconds;
 }
