@@ -3,6 +3,7 @@ const app = express();
 const http = require('http').Server(app);
 
 const io = require('socket.io')(http);
+let interval;
 
 http.listen(8082, () => {
 	console.log("Web server écoute sur http://localhost:8082");
@@ -21,10 +22,23 @@ app.get('/', (req, res) => {
 var playerNames = {};
 var listOfPlayers = {};
 
+
+
 io.on('connection', (socket) => {
 	let emitStamp;
 	let connectionStamp = Date.now();
 	let nbUpdatesPerSeconds=2;
+
+	function heartbeat() {
+		//  Michel Buffa : attention si tu fais ça ça ne changera jamais....
+		//nbUpdatesPerSeconds = 2;
+		// ici typiquement : 
+		// 1) gérer les messages reçus relatifs aux déplacements des joueurs
+		// 2) déplacer les joueurs
+		// ...éventuellement gérer une file des messages en attente au lieu de 1 seul message (réconciliation)
+		// déplacer les obsctacles, gérer les collisions etc.
+		socket.emit("heartbeat");
+}
 
 	// Pour le ping/pong mesure de latence
 	setInterval(() => {
@@ -43,10 +57,9 @@ io.on('connection', (socket) => {
 	});
 
 	//Heartbeat
-	setInterval(()=>{
-		nbUpdatesPerSeconds = 2;
-		socket.emit("heartbeat");
-	},1000/nbUpdatesPerSeconds);
+	// Michel Buffa : on garde un id sur ce setInterval pour pouvoir éventuellement l'arrêter
+	// ou le relancer avec un nouvel intervalle
+	interval = setInterval(heartbeat, 1000/nbUpdatesPerSeconds);
 
 	socket.on("heart", ()=> {
 		//console.log("heartbeat of:" + nbUpdatesPerSeconds + "per seconds");
@@ -66,7 +79,22 @@ io.on('connection', (socket) => {
 		socket.broadcast.emit('updatepos', socket.username, newPos);
 	});
 
-	socket.on("updates",()=>{
+	// Michel Buffa : on rentre dans cet écouteur quand un client a envoyé un message
+	// demandant au serveur de modifier sa fréquence d'updates
+	// Tu avais oublié le paramètre avec la nouvelle valeur !
+	socket.on("updates",(data)=>{
+		// Michel Buffa : ici on arrête le setInterval qui appelle la méthode heartbeat et on le
+		// relance avec le nouveau delay
+		nbUpdatesPerSeconds = data;
+		// on arrête le setInterval
+    	clearInterval(interval);
+		// on le relance avec la nouvelle fréquence
+    	interval = setInterval(heartbeat, 1000 / nbUpdatesPerSeconds);
+
+		// on prévient les autres clients que la fréquence du serveur a changé
+		// ils devront écouter cet événement pour repositionner leur slider et affichage
+    	io.emit("updates", nbUpdatesPerSeconds);
+
 		socket.broadcast.emit('updatenb',nbUpdatesPerSeconds);
 	})
 

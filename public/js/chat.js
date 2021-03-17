@@ -114,6 +114,18 @@ function init() {
   
   });
 
+  // Michel Buffa : le serveur a envoyé un message comme quoi un client a changé sa fréquence d'updates
+  socket.on("updates", (data) => {
+    // TODO
+    // aller chercheur le slider et changer sa valeur. Changer aussi l'affichage
+    //document.querySelector("#nbUpdates").innerHTML = data;
+    console.log("###### CHANGE NB UPDATES " + data);
+
+    // si un autre client a bougé le slider, mettre celui du client courant à jour
+    //let slider = document.querySelector("#serverUpdateValues");
+    //slider.value = parseInt(data);
+  });
+
   // we start the Game
   startGame();
 }
@@ -132,11 +144,14 @@ function changeArtificialLatency(value) {
   spanDelayValue.innerHTML = artificialLatencyDelay;
 }
 
+// Michel Buffa : appelé quand on bouge le slider 
 function changeNbUpdatesI(value){
   nbUpdatesPerSeconds = parseInt(value);
 
   let spanUpdatesValue = document.querySelector("#updates");
   spanUpdatesValue.innerHTML = nbUpdatesPerSeconds;
 
+  // Michel Buffa : on envoie un message au serveur qui doit changer sa fréquence d'updates
+  // et prévenir tous les clients connectés que sa fréquence à changée
   socket.emit("updates",nbUpdatesPerSeconds);
 }
