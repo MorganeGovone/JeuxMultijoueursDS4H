@@ -2,7 +2,7 @@ let canvas, ctx, mousePos;
 
 // Autres joueurs
 let allPlayers = {};
-let target = {x:150, y:200, radius:50, color:'yellow'};
+let target = {x:500, y:150, radius:50, color:'white'};
 
 let obstacles = [];
 
@@ -148,8 +148,8 @@ function drawTarget() {
   ctx.arc(0, 0, target.radius, 0, Math.PI*2);
   ctx.fill();
 
-  ctx.lineWidth=5;
-  ctx.strokeStyle = "black";
+  ctx.lineWidth=2;
+  ctx.strokeStyle = "grey";
   ctx.stroke();
 
   ctx.restore();
@@ -177,7 +177,7 @@ function checkIfPlayerHitTarget(player) {
     player.x = 10;
     player.y = 10;
   } else {
-    target.color = "yellow";
+    target.color = 'white';
   }
 }
 

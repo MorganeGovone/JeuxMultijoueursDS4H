@@ -118,12 +118,12 @@ function init() {
   socket.on("updates", (data) => {
     // TODO
     // aller chercheur le slider et changer sa valeur. Changer aussi l'affichage
-    //document.querySelector("#nbUpdates").innerHTML = data;
+    document.querySelector("#updates").innerHTML = data;
     console.log("###### CHANGE NB UPDATES " + data);
 
     // si un autre client a bougé le slider, mettre celui du client courant à jour
-    //let slider = document.querySelector("#serverUpdateValues");
-    //slider.value = parseInt(data);
+    let slider = document.querySelector("#rangenb");
+    slider.value = parseInt(data);
   });
 
   // we start the Game

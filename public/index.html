@@ -8,18 +8,18 @@
 </head>
 
 <body>
-	<p>Artificial latency for this client : <span id="delay">0</span> ms</p> 
-	<p>0 <input type="range" value=0 min=0 max=300 oninput="changeArtificialLatency(this.value)"> 300</p>
-	<p> Updates : <span id="updates">0</span> per second</p>
-	<p>0 <input type="range" value=0 min=0 max=10 oninput="changeNbUpdatesI(this.value)">10</p>
+	<div class="data">
+		<p>Artificial latency for this client : <span id="delay">0</span> ms</p> 
+		<p>0 <input type="range" value=0 min=0 max=300 oninput="changeArtificialLatency(this.value)"> 300</p>
+		<p> Updates : <span id="updates">0</span> per second</p>
+		<p>0 <input type="range" id ="rangenb" value=0 min=0 max=10 oninput="changeNbUpdatesI(this.value)">10</p>
 
-	<p>Rtt time : <span id="rtt"></span> ms, ping = <span id="ping"></span> ms</p>
-	<p>Server time : <span id="serverTime"></span> seconds</p>
-	<p>Client time : <span id="clientTime"></span> seconds</p>
-	<p>
+		<p>Rtt time : <span id="rtt"></span> ms, ping = <span id="ping"></span> ms</p>
+		<p>Server time : <span id="serverTime"></span> seconds</p>
+		<p>Client time : <span id="clientTime"></span> seconds</p>
+	</div>
 		
-		<canvas tabindex="1" width=300 height=300 id="myCanvas"></canvas>
-		<p>
+		<canvas tabindex="1" width=600 height=320 id="myCanvas"></canvas>
 			<div class="userList"
 				<b>USERS</b>
 				<div id="users"></div>
@@ -28,6 +28,10 @@
 				<div id="conversation"></div>
 				<input id="data" style="width:200px;" />
 				<input type="button" id="datasend" value="send" />
+			</div>
+
+			<div id=niveau>
+				<p>Niveau </p>
 			</div>
 </body>
 
