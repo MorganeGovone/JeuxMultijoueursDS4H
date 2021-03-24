@@ -29,10 +29,21 @@ function startGame() {
 }
 
 function createObstacles() {
-  let o1 = {x:50, y:50, width:20, height:100, color:"black", vy:50, range:110}
-  let o2 = {x:150, y:50, width:20, height:50, color:"orange", vy:30, range:100}
+  let o1 = {x:50, y:Math.random()*500, width:20, height:100, color:"rgb(230, 19, 36)", vy:70, range:100}
+  let o2 = {x:110, y:Math.random()*500, width:20, height:100, color:"rgb(230, 19, 36)", vy:80, range:100}
+  let o3 = {x:170, y:Math.random()*500, width:20, height:100, color:"rgb(230, 19, 36)", vy:90, range:100}
+  let o4 = {x:230, y:Math.random()*500, width:20, height:100, color:"rgb(230, 19, 36)", vy:100, range:100}
+  let o5 = {x:290, y:Math.random()*500, width:20, height:100, color:"rgb(230, 19, 36)", vy:110, range:100}
+  let o6 = {x:350, y:Math.random()*500, width:20, height:100, color:"rgb(230, 19, 36)", vy:120, range:100}
+  let o7 = {x:410, y:Math.random()*500, width:20, height:100, color:"rgb(230, 19, 36)", vy:130, range:100}
+
   obstacles.push(o1);
   obstacles.push(o2);
+  obstacles.push(o3);
+  obstacles.push(o4);
+  obstacles.push(o5);
+  obstacles.push(o6);
+  obstacles.push(o7);
 }
 
 function processKeydown(event) {
@@ -85,7 +96,7 @@ function traiteMouseMove(evt) {
 
   console.log("On envoie sendPos");
   let pos = { user: username, pos: mousePos };
-  //socket.emit("sendpos", pos);
+  socket.emit("sendpos", pos);
 }
 
 function updatePlayerNewPos(newPos) {
@@ -97,18 +108,33 @@ function updatePlayerNewPos(newPos) {
 // ou se deconnecte
 function updatePlayers(listOfPlayers) {
   allPlayers = listOfPlayers;
+  getARandomColor();
 }
 
 function updatePlayerNewNb(nbUpdates){
   allPlayers[nbUpdates.user].updatesPerSeconds = nbUpdates;
 }
 
+function getARandomColor() {
+  for(let name in allPlayers) {
+  //var colors = ['red', 'blue', 'cyan', 'purple', 'pink', 'green', 'yellow'];
+  //var colorIndex = Math.round((colors.length-1)*Math.random()); 
+  var colors = '#'+(Math.random()*0xFFFFFF<<0).toString(16)
+  /*Explication 
+  0xFFFFFF : Cela représente le plus gros nombre possible en hexadécimal sur le modèle RGB
+  Math.random()*0xFFFFFF : nombre aléatoire entre 0 et le plus gros nombre représentant une couleur en hexadécimal.
+  << est l’opérateur de décalage binaire à gauche. Retire la partie décimale.
+  */
+  allPlayers[name].color = colors;
+  return colors;
+  }
+}
+
 function drawPlayer(player) {
   ctx.save();
 
   ctx.translate(player.x, player.y);
-
-  ctx.strokeStyle = "green";
+  ctx.fillStyle = player.color;
   ctx.fillRect(0, 0, 10, 10);
 
   ctx.restore();
@@ -133,7 +159,7 @@ function moveCurrentPlayer() {
     allPlayers[username].x += calcDistanceToMove(delta, allPlayers[username].vx);
     allPlayers[username].y += calcDistanceToMove(delta, allPlayers[username].vy);
 
-    //socket.emit("sendpos", { user: username, pos: allPlayers[username]});
+    socket.emit("sendpos", { user: username, pos: allPlayers[username]});
   }
 }
 

@@ -119,7 +119,7 @@ io.on('connection', (socket) => {
 		// listOfPlayer = {'michel':{'x':0, 'y':0, 'v':0}, 
 		// 							john:{'x':10, 'y':10, 'v':0}}
 		// for this example we have x, y and v for speed... ?
-		var player = {x:50, y:50, vx:0, vy:0, updatesPerSeconds : nbUpdatesPerSeconds};
+		var player = {x:10, y:10, vx:0, vy:0,color:'red', updatesPerSeconds : nbUpdatesPerSeconds};
 		listOfPlayers[username] = player;
 		io.emit('updatePlayers',listOfPlayers);
 		io.emit('updateNb',listOfPlayers[username].updatesPerSeconds);

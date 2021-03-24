@@ -1,5 +1,5 @@
 body{
-  background-color:lightgray;
+  background-color:rgba(138, 138, 138, 0.925);
   width: 100%;
   margin: 0px;
   padding: 0px;
@@ -7,7 +7,7 @@ body{
 }
 
 #myCanvas {
-  border: 2px solid rgb(230, 19, 36);
+  border: 3px solid rgb(230, 19, 36);
   border-radius: 10px;
   background-color:rgba(241, 112, 112, 0.74);
 }
@@ -16,9 +16,11 @@ body{
   float: right;
   width:100px;
   height:250px;
-  border-left: 2px solid black;
+  border-left: 2px solid rgb(230, 19, 36);
   padding:10px;
   overflow:scroll-y;
+  color: rgb(230, 19, 36);
+  font-weight: bold;
 }
 
 .chatMessages {
@@ -31,9 +33,10 @@ body{
 
 .data{
   font-family: Georgia, sans-serif;
-  float:inline-end;
-  border: 3px solid rgba(241, 112, 112, 0.74);
+  border: 2px solid rgb(230, 19, 36);
   text-align: center;
+  line-height: 3px;
+  background-color: rgba(182, 179, 179, 0.74);
 }
 
 #niveau {
@@ -48,4 +51,8 @@ body{
   font-weight: bold;
   font-style: italic;
   color : white;
+}
+
+div b {
+  color:rgb(230, 19, 36);
 }

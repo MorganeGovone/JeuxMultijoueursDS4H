@@ -83,6 +83,7 @@ function init() {
   // connects or disconnects, we must update the whole list
   socket.on("updatePlayers", (listOfplayers) => {
     updatePlayers(listOfplayers);
+    users.style.color = getARandomColor();
   });
 
   // Latency, ping etc.
