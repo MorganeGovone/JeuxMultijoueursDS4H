@@ -284,8 +284,8 @@ function drawObstacles() {
       obstacles[i].y = 249;
       obstacles[i].vy = -obstacles[i].vy;
     }
-    if(obstacles[i].y <40) {
-      obstacles[i].y = 41;
+    if(obstacles[i].y <-10) {
+      obstacles[i].y = -9;
       obstacles[i].vy = -obstacles[i].vy;
     }
     }
