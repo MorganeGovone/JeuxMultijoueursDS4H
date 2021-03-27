@@ -321,6 +321,7 @@ function animationLoop(time) {
 
     drawTarget();
     drawObstacles();
+    chgLvl();
 
     moveCurrentPlayer();
     checkIfPlayerHitTarget(allPlayers[username]);
@@ -355,4 +356,9 @@ function changelevel(player){
 function reajustePositionJoueur(player){
   player.x = 10;
   player.y = 10;
+}
+
+//fonction d'affichage du niveau
+function chgLvl(){
+  document.querySelector("#niveau").innerHTML = "<h1>NIVEAU "+level+"</h1>"
 }
