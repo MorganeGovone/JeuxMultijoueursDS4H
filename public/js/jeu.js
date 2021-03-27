@@ -194,6 +194,17 @@ function circRectsOverlap(x0, y0, w0, h0, cx, cy, r) {
   return (((cx-testX)*(cx-testX)+(cy-testY)*(cy-testY))<r*r); 
 }
 
+// Collisions between aligned rectangles
+function rectsOverlap(x1, y1, w1, h1, x2, y2, w2, h2) {
+
+  if ((x1 > (x2 + w2)) || ((x1 + w1) < x2))
+      return false; // No horizontal axis projection overlap
+  if ((y1 > (y2 + h2)) || ((y1 + h1) < y2))
+      return false; // No vertical axis projection overlap
+  return true;    // If previous tests failed, then both axis projections
+// overlap and the rectangles intersect
+}
+
 function checkIfPlayerHitTarget(player) {
   if(player === undefined) return;
 
@@ -205,6 +216,31 @@ function checkIfPlayerHitTarget(player) {
   } else {
     target.color = 'white';
   }
+}
+
+function checkIfPlayerHitObstacle(player,obstacle) {
+  // Bounding rect position and size for the player. We need to translate
+  // it half the player size
+  // Same with the monster bounding rect
+    for(i=0;i<obstacle.length;i++){
+      var playerSize = 10;
+     // var playerXBoundingRect = player.x - playerSize / 2;
+     // var playerYBoundingRect = player.y - playerSize / 2;
+      var obstacleXBoundingRect = obstacle[i].x - obstacle[i].width / 2;
+      var obstacleYBoundingRect = obstacle[i].y - obstacle[i].height / 2;
+
+      if(player === undefined) return;
+
+      if (rectsOverlap(player.x - playerSize / 2, player.y - playerSize / 2, playerSize, playerSize, obstacleXBoundingRect, obstacleYBoundingRect, obstacle[i].width, obstacle[i].height)) {
+        console.log("COLLISION OBSTACLE REACHED BY PLAYER");
+        console.log(obstacle[i].x);
+        obstacle[i].color = "black";
+        player.x = 10;
+        player.y = 10;
+      } else {
+        obstacle[i].color = "rgb(230, 19, 36)";          
+      }
+    }
 }
 
 function drawObstacles() {
@@ -261,6 +297,7 @@ function animationLoop(time) {
 
     moveCurrentPlayer();
     checkIfPlayerHitTarget(allPlayers[username]);
+    checkIfPlayerHitObstacle(allPlayers[username],obstacles);
 
     //checkCollisionsPlayerWithObstacles()
   }
