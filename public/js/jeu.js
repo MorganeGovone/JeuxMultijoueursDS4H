@@ -350,6 +350,7 @@ function changelevel(player){
   } else {
     console.log("joueur gange");
     ctx.clearRect(0, 0, canvas.width, canvas.height);
+    victory(player);
   }
 }
 
@@ -361,4 +362,12 @@ function reajustePositionJoueur(player){
 //fonction d'affichage du niveau
 function chgLvl(){
   document.querySelector("#niveau").innerHTML = "<h1>NIVEAU "+level+"</h1>"
+}
+
+function victory(player){
+  var para = document.createElement("P");       // Create a <p> element
+    para.innerText = "YOU WIN !!";               // Insert text
+    para.setAttribute("id","T1");
+    para.style.cssText = 'background-color: '+player.color+';position:absolute;top:45%;left:2px;font-size: 20px;font-family: serif;color: white;width: 600px;text-align: center;'
+    document.body.appendChild(para);
 }
