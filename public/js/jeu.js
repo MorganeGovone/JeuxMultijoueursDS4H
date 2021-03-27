@@ -5,6 +5,7 @@ let allPlayers = {};
 let target = {x:500, y:150, radius:50, color:'white'};
 
 let obstacles = [];
+let level = 1;
 
 // for time based animation
 // for time based animation
@@ -29,21 +30,30 @@ function startGame() {
 }
 
 function createObstacles() {
-  let o1 = {x:50, y:Math.random()*500, width:20, height:100, color:"rgb(230, 19, 36)", vy:70, range:100}
-  let o2 = {x:110, y:Math.random()*500, width:20, height:100, color:"rgb(230, 19, 36)", vy:80, range:100}
-  let o3 = {x:170, y:Math.random()*500, width:20, height:100, color:"rgb(230, 19, 36)", vy:90, range:100}
-  let o4 = {x:230, y:Math.random()*500, width:20, height:100, color:"rgb(230, 19, 36)", vy:100, range:100}
-  let o5 = {x:290, y:Math.random()*500, width:20, height:100, color:"rgb(230, 19, 36)", vy:110, range:100}
-  let o6 = {x:350, y:Math.random()*500, width:20, height:100, color:"rgb(230, 19, 36)", vy:120, range:100}
-  let o7 = {x:410, y:Math.random()*500, width:20, height:100, color:"rgb(230, 19, 36)", vy:130, range:100}
 
-  obstacles.push(o1);
-  obstacles.push(o2);
-  obstacles.push(o3);
-  obstacles.push(o4);
-  obstacles.push(o5);
-  obstacles.push(o6);
-  obstacles.push(o7);
+  switch(level){
+    case 1 :
+      let o1 = {x:50, y:Math.random()*500, width:20, height:100, color:"rgb(230, 19, 36)", vy:70, range:100}
+      obstacles.push(o1);
+    case 2 :
+      let o2 = {x:110, y:Math.random()*500, width:20, height:100, color:"rgb(230, 19, 36)", vy:80, range:100}
+      obstacles.push(o2);
+    case 3 :
+      let o3 = {x:170, y:Math.random()*500, width:20, height:100, color:"rgb(230, 19, 36)", vy:90, range:100}
+      obstacles.push(o3);
+    case 4 :
+      let o4 = {x:230, y:Math.random()*500, width:20, height:100, color:"rgb(230, 19, 36)", vy:100, range:100}
+      obstacles.push(o4);
+    case 5:
+      let o5 = {x:290, y:Math.random()*500, width:20, height:100, color:"rgb(230, 19, 36)", vy:110, range:100}
+      obstacles.push(o5);
+    case 6 :  
+    let o6 = {x:350, y:Math.random()*500, width:20, height:100, color:"rgb(230, 19, 36)", vy:120, range:100}
+    obstacles.push(o6);
+    case 7 :  
+    let o7 = {x:410, y:Math.random()*500, width:20, height:100, color:"rgb(230, 19, 36)", vy:130, range:100}
+    obstacles.push(o7);
+  }
 }
 
 function processKeydown(event) {
@@ -211,8 +221,7 @@ function checkIfPlayerHitTarget(player) {
   if(circRectsOverlap(player.x, player.y, 10, 10, target.x, target.y, target.radius)) {
     console.log("COLLISION TARGET REACHED BY PLAYER");
     target.color = "red";
-    player.x = 10;
-    player.y = 10;
+    changelevel(player);
   } else {
     target.color = 'white';
   }
@@ -222,31 +231,30 @@ function checkIfPlayerHitObstacle(player,obstacle) {
   // Bounding rect position and size for the player. We need to translate
   // it half the player size
   // Same with the monster bounding rect
-    for(i=0;i<obstacle.length;i++){
-      var playerSize = 10;
-     // var playerXBoundingRect = player.x - playerSize / 2;
-     // var playerYBoundingRect = player.y - playerSize / 2;
-      var obstacleXBoundingRect = obstacle[i].x - obstacle[i].width / 2;
-      var obstacleYBoundingRect = obstacle[i].y - obstacle[i].height / 2;
+  for(i=0;i<level;i++){
+    var playerSize = 10;
+  // var playerXBoundingRect = player.x - playerSize / 2;
+  // var playerYBoundingRect = player.y - playerSize / 2;
+    var obstacleXBoundingRect = obstacle[i].x - obstacle[i].width / 2;
+    var obstacleYBoundingRect = obstacle[i].y - obstacle[i].height / 2;
 
-      if(player === undefined) return;
+    if(player === undefined) return;
 
-      if (rectsOverlap(player.x - playerSize / 2, player.y - playerSize / 2, playerSize, playerSize, obstacleXBoundingRect, obstacleYBoundingRect, obstacle[i].width, obstacle[i].height)) {
-        console.log("COLLISION OBSTACLE REACHED BY PLAYER");
-        console.log(obstacle[i].x);
-        obstacle[i].color = "black";
-        player.x = 10;
-        player.y = 10;
-      } else {
-        obstacle[i].color = "rgb(230, 19, 36)";          
-      }
+    if (rectsOverlap(player.x - playerSize / 2, player.y - playerSize / 2, playerSize, playerSize, obstacleXBoundingRect, obstacleYBoundingRect, obstacle[i].width, obstacle[i].height)) {
+      console.log("COLLISION OBSTACLE REACHED BY PLAYER");
+      console.log(obstacle[i].x);
+      obstacle[i].color = "black";
+      reajustePositionJoueur(player);
+    } else {
+      obstacle[i].color = "rgb(230, 19, 36)";          
     }
+  }
 }
 
 function drawObstacles() {
   ctx.save();
 
-  obstacles.forEach(o => {
+  /*obstacles.forEach(o => {
     ctx.fillStyle = o.color;
     ctx.fillRect(o.x, o.y, o.width, o.height);
 
@@ -263,7 +271,26 @@ function drawObstacles() {
       o.y = 41;
       o.vy = -o.vy;
     }
-  });
+  })*/
+  if(level<=obstacles.length){
+    for(i=0;i<level;i++){
+    ctx.fillStyle = obstacles[i].color;
+    ctx.fillRect(obstacles[i].x, obstacles[i].y, obstacles[i].width, obstacles[i].height);
+    obstacles[i].y += calcDistanceToMove(delta,obstacles[i].vy);
+
+    if(obstacles[i].y > 250) {
+      console.log("y > 250 we reverse the speed");
+      // we must put the obstacle back at contact point
+      obstacles[i].y = 249;
+      obstacles[i].vy = -obstacles[i].vy;
+    }
+    if(obstacles[i].y <40) {
+      obstacles[i].y = 41;
+      obstacles[i].vy = -obstacles[i].vy;
+    }
+    }
+  }
+  ;
 
   ctx.restore();
 }
@@ -311,3 +338,21 @@ var calcDistanceToMove = function(delta, speed) {
   //console.log("#delta = " + delta + " speed = " + speed);
   return (speed * delta); 
 };
+
+//gestion du lancement des niveaux
+function changelevel(player){
+  if(level<7){
+  level++;
+  reajustePositionJoueur(player);
+  createObstacles();
+  drawObstacles(level);
+  } else {
+    console.log("joueur gange");
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+  }
+}
+
+function reajustePositionJoueur(player){
+  player.x = 10;
+  player.y = 10;
+}
